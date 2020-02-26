@@ -1,19 +1,69 @@
-import random
-import time
+def picalc(n):
+    import random
+    import time
+    import matplotlib.pyplot as plt
 
-n=10000000
-circle = 0
-total = 0
-start = time.perf_counter()
+    starttime = time.time()
+    pointsin = 0
+    totalpoints = 0
+    inX = []
+    inY = []
+    outX = []
+    outY = []
 
-for i in range(n):
-    x = random.uniform(0, 1)
-    y = random.uniform(0, 1)
-    distance = x**2+y**2 >=1
-    if distance <1:
-        circle +=1
-    total +=1
-pi = circle/total
-print(4*pi)
-end = time.perf_counter()
-print(round(end-start,3))
+
+    for _ in range(n):
+        x = random.uniform(-1, 1)
+        y = random.uniform(-1, 1)
+        if x**2+y**2 < 1:
+            pointsin += 1
+            inX.append(x)
+            inY.append(y)
+        elif x**2+y**2 >= 1:
+            outX.append(x)
+            outY.append(y)
+        totalpoints += 1
+    pi = 4*pointsin/totalpoints
+    print(pi)
+
+    piendtime = time.time()
+    totaltime = piendtime - starttime
+    print(round(totaltime, 3))
+    totalpointscheck = (len(inX)+len(outX))
+    print(totalpointscheck)
+
+    #make arrays negative
+    neginX = [-x for x in inX]
+    neginY = [-x for x in inY]
+    negoutX = [-x for x in outX]
+    negoutY = [-x for x in outY]
+
+    # plotting points as a scatter plot
+    # quad 1
+    plt.scatter(inX, inY, label="Pi", color="blue", marker=".")
+    plt.scatter(outX, outY, label="Pi out", color="red", marker=".")
+
+    '''# quad 2
+    plt.scatter(inX, neginY, color="blue", marker=".", s=30)
+    plt.scatter(outX, negoutY, color="red", marker=".", s=30)
+    # quad 3
+    plt.scatter(neginX, neginY, color="blue", marker=".", s=30)
+    plt.scatter(negoutX, negoutY, color="red", marker=".", s=30)
+    # quad 4
+    plt.scatter(neginX, inY, color="blue", marker=".", s=30)
+    plt.scatter(negoutX, outY, color="red", marker=".", s=30)'''
+
+    plt.xlabel('Random X')
+    plt.ylabel('Random Y')
+    plt.title('Pi plotted')
+    plt.legend()
+
+    print(len(inX),len(outX), len(inX)+len(outX))
+
+    # function to show the plot
+    plt.show()
+    return pi
+
+
+picalc(10000)
+
